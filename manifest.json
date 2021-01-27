@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "js": [ "content.js" ],
+      "matches": [ "https://www.sonicgarden.world/*" ],
+      "run_at": "document_start"
+    }
+  ],
+  "version": "1.0",
+  "name": "World Plus for Chrome",
+  "description": "Add some functionalities to World",
+  "icons": {
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "browser_action": {
+    "default_title": "World Plus",
+    "default_icon": "icon128.png",
+    "default_popup": "popup.html"
+  }
+}
