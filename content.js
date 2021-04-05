@@ -31,8 +31,17 @@ function archiveAll() {
   if (info == null) return;
 
   if (window.confirm(`${info.name}のスレッドをすべてアーカイブします`)) {
-    fetch(`/groups/${info.id}/entries/archive_all`, {'method': 'DELETE', ...fetchOptions('json')})
-      .then((response) => console.log(`archive finished: ${info.name}`));
+    // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#xhr_and_fetch
+    // In Firefox, extensions that need to perform requests that behave as if they were sent by the content itself can use  content.XMLHttpRequest and content.fetch() instead.
+    const fetch = (window.content && window.content.fetch) ? content.fetch : window.fetch;
+    fetch(`https://www.sonicgarden.world/groups/${info.id}/entries/archive_all`, {'method': 'DELETE', ...fetchOptions('json')})
+    .then((response) => {
+      if (response.ok) {
+        console.log(`Archive finished: ${info.name}`)
+      } else {
+        console.log(`Acrhive failed:`, response);
+      }
+    });
   }
 }
 
