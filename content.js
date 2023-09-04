@@ -1,6 +1,23 @@
 const macOs = /Mac OS/.test(window.navigator.userAgent);
 
-function getGroupInfo() {
+function getGroupInfoV2() {
+  const parent = document.getElementById('BoardHeader_clipboard')?.parentNode;
+  if (parent == null) return null;
+
+  let found = null;
+  Array.from(parent.querySelectorAll('a[target="_blank"')).find((elem) => {
+    const match = /\/groups\/(\d+)/.exec(elem.href);
+    if (match) {
+      found = { id: parseInt(match[1], 10), name: elem.text };
+      return true;
+    } else {
+      return false;
+    }
+  })
+  return found;
+}
+
+function getGroupInfoV1() {
   const groupNameNode = document.querySelector('.js-group-header .js-group-name');
   if (!groupNameNode) {
     return null;
@@ -27,7 +44,7 @@ function fetchOptions(type) {
 }
 
 function archiveAll() {
-  const info = getGroupInfo();
+  const info = getGroupInfoV1() || getGroupInfoV2();
   if (info == null) return;
 
   if (window.confirm(`${info.name}のスレッドをすべてアーカイブします`)) {
